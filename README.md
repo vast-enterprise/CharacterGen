@@ -5,8 +5,8 @@ This is the official codebase of SIGGRAPH'24 (TOG) [CharacterGen](https://charac
 ![teaser](./materials/teaser.png)
 
 - [x] Rendering Script of VRM model, including blender and three-js.
-- [ ] Inference code for 2D generation stage.
-- [ ] Inference code for 3D generation stage.
+- [x] Inference code for 2D generation stage.
+- [x] Inference code for 3D generation stage.
 
 ## Quick Start
 
