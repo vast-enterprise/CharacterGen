@@ -21,7 +21,19 @@ To be uploaded soon.
 
 ### 3. Run the script
 
-To be finnished soon.
+#### Run 2D Stage
+
+```
+cd 2D_Stage
+python webui.py
+```
+
+#### Run 3D Stage
+
+```
+cd 3D_Stage
+python webui.py
+```
 
 ## Get the Anime3D Dataset
 
