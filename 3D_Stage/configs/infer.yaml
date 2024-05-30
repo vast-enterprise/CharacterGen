@@ -1,39 +1,64 @@
-extends: configs/lrm.yaml
-
-name: refinement-dmtet
-tag: "refine"
-
-data_cls: lrm.data.anime_dataset.ObjaverseDataModule
+system_cls: lrm.systems.multiview_lrm.MultiviewLRM
 data:
-  # model number: 693063 + 192250 = 885313
-  root_dir:
-    - /new_render
-
-  train_random_background: random_gray
-  num_views_per_scene: 20
-  image_suffix: png
-
-  height: 448
-  width: 448
-  rand_max_height: 448
-  rand_max_width: 448  
-
-  train_indices: [0, 884801]
-  val_indices:
-    - 884801
-    - ${add:884801,${mul:64,${trainer.num_nodes}}}
-  test_indices:
-    - 884801
-    - ${add:884801,${mul:64,${trainer.num_nodes}}}
+  cond_width: 504
+  cond_height: 504
 
 system:
   weights: ./models/lrm.ckpt
-  # weights_mapping:
-  #   - from: decoder.heads.density
-  #     to: decoder.heads.sdf
+
   weights_ignore_modules:
     - decoder.heads.density
+
   check_train_every_n_steps: 100
+
+  camera_embedder_cls: lrm.models.camera.LinearCameraEmbedder
+  camera_embedder:
+    in_channels: 16
+    out_channels: 768
+    conditions:
+      - c2w_cond
+
+  # image tokenizer transforms input images to tokens
+  image_tokenizer_cls: lrm.models.tokenizers.image.DINOV2SingleImageTokenizer
+  image_tokenizer:
+    pretrained_model_name_or_path: "./models/base"
+    freeze_backbone_params: false
+    enable_memory_efficient_attention: true
+    enable_gradient_checkpointing: true
+    # camera modulation to the DINO transformer layers
+    modulation: true
+    modulation_zero_init: true
+    modulation_single_layer: true
+    modulation_cond_dim: ${system.camera_embedder.out_channels}
+
+  # tokenizer gives a tokenized representation for the 3D scene
+  # triplane tokens in this case
+  tokenizer_cls: lrm.models.tokenizers.triplane.TriplaneLearnablePositionalEmbedding
+  tokenizer:
+    plane_size: 32
+    num_channels: 512
+
+  # backbone network is a transformer that takes scene tokens (potentially with conditional image tokens)
+  # and outputs scene tokens of the same size
+  backbone_cls: lrm.models.transformers.transformer_1d.Transformer1D
+  backbone:
+    in_channels: ${system.tokenizer.num_channels}
+    num_attention_heads: 16
+    attention_head_dim: 64
+    num_layers: 12
+    cross_attention_dim: 768 # hard-code, =DINO feature dim
+    # camera modulation to the transformer layers
+    # if not needed, set norm_type=layer_norm and do not specify cond_dim_ada_norm_continuous
+    norm_type: "layer_norm"
+    enable_memory_efficient_attention: true
+    gradient_checkpointing: true
+
+  # post processor takes scene tokens and outputs the final scene parameters that will be used for rendering
+  # in this case, triplanes are upsampled and the features are condensed
+  post_processor_cls: lrm.models.networks.TriplaneUpsampleNetwork
+  post_processor:
+    in_channels: 512
+    out_channels: 80
 
   renderer_cls: lrm.models.renderers.triplane_dmtet.TriplaneDMTetRenderer
   renderer:
@@ -42,8 +67,8 @@ system:
     sdf_bias: -2.
     isosurface_resolution: 256
     enable_isosurface_grid_deformation: false
-    sdf_activation: negative  
-  
+    sdf_activation: negative
+
   decoder_cls: lrm.models.networks.MultiHeadMLP
   decoder:
     in_channels: 240 # 3 * 80
@@ -62,45 +87,16 @@ system:
     chunk_mode: deferred
     chunk_size: 131072      
 
-  # decoder:
-  #   chunk_mode: deferred
-  #   chunk_size: 131072   
-
-  optimizer:
-    name: AdamW
-    args:
-      lr: 1e-4
-      betas: [0.9, 0.95]
-      weight_decay: 0.05
-
   exporter:
-    fmt: "obj-mtl"
-    #visual: "vertex"
+    fmt: "obj"
+   #visual: "vertex"
+    visual: "uv"
     save_uv: True
     save_texture: True
     uv_unwrap_method: "open3d"
-  
-  scheduler:
-    name: SequentialLR
-    interval: step
-    schedulers:
-      - name: LinearLR
-        interval: step
-        args:
-          start_factor: 1e-6
-          end_factor: 1.0
-          total_iters: 3000
-      - name: CosineAnnealingLR
-        interval: step
-        args:
-          T_max: ${calc_num_train_steps:885313,${data.batch_size},${trainer.max_epochs},${trainer.num_nodes}}
-          eta_min: 0.0
-    milestones:
-      - 3000
 
-trainer:
-  max_epochs: 40
-  strategy: ddp_find_unused_parameters_true
+  material_cls: lrm.models.materials.no_material.NoMaterial
 
-checkpoint:
-  every_n_epochs: 10
+  background_cls: lrm.models.background.solid_color_background.SolidColorBackground
+  background:
+    color: [0.5, 0.5, 0.5]
