@@ -88,3 +88,26 @@ The open the website http://localhost:5173/, it use 2 threads to render the imag
 | ![](./materials/input/1.png) | ![](./materials/ours_multiview/1.png) | <img alt="threestudio" src="./materials/videos/1.gif" width="100%"> |
 | ![](./materials/input/2.png) | ![](./materials/ours_multiview/2.png) | <img alt="threestudio" src="./materials/videos/2.gif" width="100%"> |
 | ![](./materials/input/3.png) | ![](./materials/ours_multiview/3.png) | <img alt="threestudio" src="./materials/videos/3.gif" width="100%"> |
+
+# Acknowledgements
+
+This project is built upon [Tune-A-Video](https://github.com/showlab/Tune-A-Video) and [TripoSR](https://github.com/VAST-AI-Research/TripoSR).
+And the rendering scripts is build upon [three-vrm](https://github.com/pixiv/three-vrm) and [VRM-Addon-for-Blender](https://github.com/saturday06/VRM-Addon-for-Blender).
+Thanks very much to many friends for their unselfish help with our work. We're extremely grateful to [Yuanchen](https://github.com/bennyxguo), [Yangguang](https://scholar.google.com/citations?user=a7AMvgkAAAAJ), and Yuan Liang for their guidance on code details and ideas.
+We thank all the authors for their great repos and help.
+
+# Citation
+
+If you find our code or paper helps, 
+
+```bibtex
+@article{peng2024charactergen,
+  title     ={Subdivision-based mesh convolution networks},
+  author    ={Peng, Hao-Yang and Zhang, Jia-Peng and Guo, Meng-Hao and Cao, Yan-Pei, and Hu, Shi-Min},
+  journal   ={ACM Transactions on Graphics (TOG)},
+  year      ={2024},
+  volume    ={43},
+  number    ={4},
+  doi       ={10.1145/3658217}
+}
+```
