@@ -102,12 +102,12 @@ If you find our code or paper helps,
 
 ```bibtex
 @article{peng2024charactergen,
-  title     ={Subdivision-based mesh convolution networks},
-  author    ={Peng, Hao-Yang and Zhang, Jia-Peng and Guo, Meng-Hao and Cao, Yan-Pei, and Hu, Shi-Min},
-  journal   ={ACM Transactions on Graphics (TOG)},
-  year      ={2024},
-  volume    ={43},
-  number    ={4},
-  doi       ={10.1145/3658217}
+  title   ={CharacterGen: Efficient 3D Character Generation from Single Images with Multi-View Pose Canonicalization}, 
+  author  ={Hao-Yang Peng and Jia-Peng Zhang and Meng-Hao Guo and Yan-Pei Cao and Shi-Min Hu},
+  journal ={ACM Transactions on Graphics (TOG)},
+  year    ={2024},
+  volume  ={43},
+  number  ={4},
+  doi     ={10.1145/3658217}
 }
 ```
