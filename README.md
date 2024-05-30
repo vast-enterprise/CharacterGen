@@ -93,12 +93,12 @@ The open the website http://localhost:5173/, it use 2 threads to render the imag
 
 This project is built upon [Tune-A-Video](https://github.com/showlab/Tune-A-Video) and [TripoSR](https://github.com/VAST-AI-Research/TripoSR).
 And the rendering scripts is build upon [three-vrm](https://github.com/pixiv/three-vrm) and [VRM-Addon-for-Blender](https://github.com/saturday06/VRM-Addon-for-Blender).
-Thanks very much to many friends for their unselfish help with our work. We're extremely grateful to [Yuanchen](https://github.com/bennyxguo), [Yangguang](https://scholar.google.com/citations?user=a7AMvgkAAAAJ), and Yuan Liang for their guidance on code details and ideas.
+Thanks very much to many friends for their unselfish help with our work. We're extremely grateful to [Yuanchen](https://github.com/bennyguo), [Yangguang](https://scholar.google.com/citations?user=a7AMvgkAAAAJ), and Yuan Liang for their guidance on code details and ideas.
 We thank all the authors for their great repos and help.
 
 # Citation
 
-If you find our code or paper helps, 
+If you find our code or paper helps, please consider citing:
 
 ```bibtex
 @article{peng2024charactergen,
