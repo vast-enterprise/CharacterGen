@@ -14,10 +14,14 @@ This is the official codebase of SIGGRAPH'24 (TOG) [CharacterGen](https://charac
 
 `pip install -r requirements.txt`
 
-
 ### 2. Download the weight
 
-To be uploaded soon.
+Install `huggingface-cli` first.
+
+```bash
+huggingface-cli download --resume-download zjpshadow/CharacterGen --include 2D_Stage/* --local-dir ./2D_Stage
+huggingface-cli download --resume-download zjpshadow/CharacterGen --include 3D_Stage/* --local-dir ./3D_Stage
+```
 
 ### 3. Run the script
 
