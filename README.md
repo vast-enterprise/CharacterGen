@@ -19,8 +19,8 @@ This is the official codebase of SIGGRAPH'24 (TOG) [CharacterGen](https://charac
 Install `huggingface-cli` first.
 
 ```bash
-huggingface-cli download --resume-download zjpshadow/CharacterGen --include 2D_Stage/* --local-dir ./2D_Stage
-huggingface-cli download --resume-download zjpshadow/CharacterGen --include 3D_Stage/* --local-dir ./3D_Stage
+huggingface-cli download --resume-download zjpshadow/CharacterGen --include 2D_Stage/* --local-dir .
+huggingface-cli download --resume-download zjpshadow/CharacterGen --include 3D_Stage/* --local-dir .
 ```
 
 ### 3. Run the script
